@@ -1,1 +1,1 @@
-"something"
+return "something"
