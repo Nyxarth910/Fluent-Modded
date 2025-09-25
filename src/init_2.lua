@@ -1,1 +1,1 @@
-return "init"
+return "something"
