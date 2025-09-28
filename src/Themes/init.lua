@@ -3,9 +3,9 @@ local Themes = {
 		"Dark",
 		"Darker",
 		"Light",
-		"Crimson",
+		"Aqua",
 		"Amethyst",
-		"Rose",
+		"Crimson",
 	},
 }
 
