@@ -293,20 +293,33 @@ local SaveManager = {} do
 		end})
 
 		local AutoloadButton
+		local AutoLoadPath = self.Folder .. "/settings/autoload.txt"
 		AutoloadButton = section:AddButton({Title = "Set as autoload", Description = "Current autoload config: none", Callback = function()
 			local name = SaveManager.Options.SaveManager_ConfigList.Value
-			writefile(self.Folder .. "/settings/autoload.txt", name)
-			AutoloadButton:SetDesc("Current autoload config: " .. name)
-			self.Library:Notify({
-				Title = "Interface",
-				Content = "Config loader",
-				SubContent = string.format("Set %q to auto load", name),
-				Duration = 7
-			})
+					
+            if isfile(AutoLoadPath) then
+               delfile(AutoLoadPath)
+			   AutoloadButton:SetDesc("Current autoload config: none")
+			   self.Library:Notify({
+                   Title = "Interface",
+                   Content = "Config loader",
+                   SubContent = "Autoload disabled",
+                  Duration = 7
+                })
+	     	else
+		      writefile(AutoLoadPath, name)
+			  AutoloadButton:SetDesc("Current autoload config: " .. name)
+			  self.Library:Notify({
+				  Title = "Interface",
+				  Content = "Config loader",
+				  SubContent = string.format("Set %q to auto load", name),
+				  Duration = 7
+			   })
+			end
 		end})
 
-		if isfile(self.Folder .. "/settings/autoload.txt") then
-			local name = readfile(self.Folder .. "/settings/autoload.txt")
+		if isfile(AutoLoadPath) then
+			local name = readfile(AutoLoadPath)
 			AutoloadButton:SetDesc("Current autoload config: " .. name)
 		end
 
