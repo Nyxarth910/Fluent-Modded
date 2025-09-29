@@ -3,35 +3,7 @@ local httpService = game:GetService("HttpService")
 local SaveManager = {} do
 	SaveManager.Folder = "FluentSettings"
 	SaveManager.Ignore = {}
-	
-	local function serializeUDim2(u)
-        return {
-            ScaleX = u.X.Scale, OffsetX = u.X.Offset,
-            ScaleY = u.Y.Scale, OffsetY = u.Y.Offset
-        }
-    end
-    local function deserializeUDim2(t)
-        return UDim2.new(t.ScaleX, t.OffsetX, t.ScaleY, t.OffsetY)
-    end
-
     SaveManager.Parser = {
-        FloatingButton = {
-            Save = function(idx, object)
-                return {
-                    type = "FloatingButton",
-                    idx = idx,
-                    size = serializeUDim2(object.Frame.Size),
-                    position = serializeUDim2(object.Frame.Position)
-                }
-            end,
-            Load = function(idx, data)
-                local obj = SaveManager.Options[idx]
-                if obj then
-                    obj.Frame.Size = deserializeUDim2(data.size)
-                    obj.Frame.Position = deserializeUDim2(data.position)
-                end
-            end,
-         },
 		Toggle = {
 			Save = function(idx, object) 
 				return { type = "Toggle", idx = idx, value = object.Value } 
