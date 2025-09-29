@@ -77,11 +77,6 @@ function FloatingButtonManager:RefreshConfigList()
     return out
 end
 
-function FBM:SetLibrary(library)
-    self.Library = library
-    self.Options = library.Options
-end
-
 function FloatingButtonManager:BuildConfigSection(tab)
     assert(self.Library, "Must set FloatingButtonManager.Library")
 
