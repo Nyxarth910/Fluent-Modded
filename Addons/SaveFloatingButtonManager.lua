@@ -22,6 +22,16 @@ function FloatingButtonManager:BuildFolderTree()
         if not isfolder(path) then makefolder(path) end
     end
 end
+
+function FloatingButtonManager:SetLibrary(library)
+    self.Library = library
+end
+
+function FloatingButtonManager:SetFolder(folder)
+    self.Folder = folder
+    self:BuildFolderTree()
+end
+
 FloatingButtonManager:BuildFolderTree()
 
 function FloatingButtonManager:AddButton(id, frame)
@@ -63,18 +73,31 @@ function FloatingButtonManager:RefreshConfigList()
     local out = {}
     for _, file in ipairs(list) do
         if file:sub(-5) == ".json" then
-            local pos = file:find(".json", 1, true)
-            local p = pos
-            local char = file:sub(p, p)
-            while char ~= "/" and char ~= "\\" and char ~= "" do
-                p = p - 1
-                char = file:sub(p, p)
-            end
-            local name = file:sub(p + 1, pos - 1)
-            table.insert(out, name)
+            local name = file:match("([^/\\]+)%.json$")
+            if name then table.insert(out, name) end
         end
     end
     return out
+end
+
+function FloatingButtonManager:LoadAutoloadConfig()
+    local autoPath = self.Folder .. "/settings/autoload.txt"
+    if isfile(autoPath) then
+        local name = readfile(autoPath)
+        local success, err = self:Load(name)
+        if not success then
+            return self.Library:Notify({
+                Title = "Floating Buttons",
+                Content = "Failed to load autoload layout: " .. err,
+                Duration = 5
+            })
+        end
+        self.Library:Notify({
+            Title = "Floating Buttons",
+            Content = string.format("Auto loaded layout %q", name),
+            Duration = 5
+        })
+    end
 end
 
 function FloatingButtonManager:BuildConfigSection(tab)
