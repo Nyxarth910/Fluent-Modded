@@ -34,8 +34,9 @@ end
 
 FloatingButtonManager:BuildFolderTree()
 
-function FloatingButtonManager:AddButton(id, frame)
+function FloatingButtonManager:AddButton(id, frame, locked)
     self.Buttons[id] = frame
+    frame:SetAttribute("Locked", locked or false)
 end
 
 function FloatingButtonManager:Save(name)
