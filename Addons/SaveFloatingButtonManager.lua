@@ -45,7 +45,8 @@ function FloatingButtonManager:Save(name)
     for id, frame in pairs(self.Buttons) do
         data[id] = {
             size = serializeUDim2(frame.Size),
-            position = serializeUDim2(frame.Position)
+            position = serializeUDim2(frame.Position),
+            locked = frame:GetAttribute("Locked") or false
         }
     end
     local success, encoded = pcall(httpService.JSONEncode, httpService, data)
@@ -64,6 +65,7 @@ function FloatingButtonManager:Load(name)
         if frame then
             frame.Size = deserializeUDim2(saved.size)
             frame.Position = deserializeUDim2(saved.position)
+            frame:SetAttribute("Locked", saved.locked or false)
         end
     end
     return true
